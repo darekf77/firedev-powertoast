@@ -1,30 +1,30 @@
-declare interface IProgress {
+interface IProgress {
   header?: string,
   percent?: number | null,
   custom?: string,
   footer?: string
 }
 
-declare interface ICallback{
+interface ICallback {
   keepalive?: number,
   onActivated?(): void,
   onDismissed?(reason: string): void
 }
 
-declare interface IGroup{
+interface IGroup {
   id: string,
   title: string
 }
 
-declare interface IButton{
-  text: string, 
-  onClick: string, 
-  activationType ?: string,
-  contextMenu?: boolean, 
+interface IButton {
+  text: string,
+  onClick: string,
+  activationType?: string,
+  contextMenu?: boolean,
   icon?: string
 }
 
-declare interface IOption {
+export interface IOption {
   disableWinRT?: boolean,
   usePowerShellCore?: boolean,
   appID?: string,
@@ -48,13 +48,13 @@ declare interface IOption {
   button?: IButton[],
   group?: IGroup | null,
   progress?: IProgress,
-  callback?: ICallback 
+  callback?: ICallback
 }
 
-export default function (option?: IOption): Promise<void>;
-export const isWinRTAvailable: boolean;
 
-declare interface IToastProperties {
+export const isWinRTAvailable: boolean = false
+
+interface IToastProperties {
   expirationTime: string,
   tag: string,
   group: string,
@@ -66,6 +66,6 @@ declare interface IToastProperties {
   status: string | null
 }
 
-export function remove(appID: string, uniqueID?: string | string[]): Promise<void>;
-export function getHistory(appID: string, verbose?: boolean): Promise<IToastProperties[]>;
-export function makeXML(option?: IOption): string;
+// export function remove(appID: string, uniqueID?: string | string[]): Promise<void>;
+// export function getHistory(appID: string, verbose?: boolean): Promise<IToastProperties[]>;
+// export function makeXML(option?: IOption): string;

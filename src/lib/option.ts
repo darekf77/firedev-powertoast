@@ -4,7 +4,7 @@ This source code is licensed under the MIT License
 found in the LICENSE file in the root directory of this source tree.
 */
 
-import { isIntegerPositive, isIntegerPositiveOrZero, isArrayOfObj } from "@xan105/is";
+// import { isIntegerPositive, isIntegerPositiveOrZero, isArrayOfObj } from "@xan105/is";
 
 const store = {
   win10: "Microsoft.WindowsStore_8wekyb3d8bbwe!App",
@@ -21,13 +21,13 @@ const activationTypes = [
 ];
 
 function normalize(option, legacy) {
-  
+
   let options = {
     disableWinRT: option.disableWinRT || false,
     usePowerShellCore: option.usePowerShellCore || false,
     appID: option.appID || ( legacy ? store.win8 : store.win10 ),
     uniqueID: option.uniqueID || null,
-    sequenceNumber: isIntegerPositiveOrZero(option.sequenceNumber) ? option.sequenceNumber : 0, //0 indicates "always update"
+    // sequenceNumber: isIntegerPositiveOrZero(option.sequenceNumber) ? option.sequenceNumber : 0, //0 indicates "always update"
     title: option.title || "",
     message: option.message || "",
     attribution: option.attribution || "",
@@ -40,16 +40,16 @@ function normalize(option, legacy) {
     audio: option.audio || "",
     longTime: option.longTime || false,
     onClick: option.onClick || "",
-    button: isArrayOfObj(option.button) ? option.button : [],
+    // button: isArrayOfObj(option.button) ? option.button : [],
     group: option.group || null,
     scenario: scenarios.includes(option.scenario) ? option.scenario : scenarios[0]
   };
-  
-  if (option.progress) {
+
+  if (option.progress) { // @ts-ignore
     options.progress = {
       header: option.progress.header || "",
-      percent: (option.progress.percent || option.progress.percent === 0) && 
-                option.progress.percent >= 0 && 
+      percent: (option.progress.percent || option.progress.percent === 0) &&
+                option.progress.percent >= 0 &&
                 option.progress.percent <= 100 ? (option.progress.percent / 100).toFixed(2) : "indeterminate",
       custom: option.progress.custom || "",
       footer: option.progress.footer || "",
@@ -57,23 +57,26 @@ function normalize(option, legacy) {
   }
 
   if (option.callback) {
+     // @ts-ignore
     options.callback = {
-      keepalive: isIntegerPositive(option.callback.keepalive) ? option.callback.keepalive : 6,
+      // keepalive: isIntegerPositive(option.callback.keepalive) ? option.callback.keepalive : 6,
       onActivated: option.callback.onActivated || function () {},
       onDismissed: option.callback.onDismissed || function () {},
     };
   }
-  
-  try {
-    if (option.timeStamp) options.timeStamp = new Date(+option.timeStamp * 1000).toISOString();
-    else options.timeStamp = "";
-  } catch { options.timeStamp = "" }
-  
-  options.activationType = activationTypes.includes(option.activationType) ? option.activationType : 
-                           options.callback && !options.onClick ? "background" : "protocol";                  
-  options.button.forEach(button => button.activationType = activationTypes.includes(button.activationType) ? button.activationType : "protocol");
 
-  return options; 
+  try {
+     // @ts-ignore
+    if (option.timeStamp) options.timeStamp = new Date(+option.timeStamp * 1000).toISOString(); // @ts-ignore
+    else options.timeStamp = ""; // @ts-ignore
+  } catch { options.timeStamp = "" }
+   // @ts-ignore
+  options.activationType = activationTypes.includes(option.activationType) ? option.activationType :  // @ts-ignore
+                           options.callback && !options.onClick ? "background" : "protocol";
+
+  // options.button.forEach(button => button.activationType = activationTypes.includes(button.activationType) ? button.activationType : "protocol");
+
+  return options;
 }
 
 export { normalize };

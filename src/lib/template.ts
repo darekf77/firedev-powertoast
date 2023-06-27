@@ -10,7 +10,7 @@ import * as toastXML from "./template/xml.js";
 function generate(options, powerShell, legacy) {
 
   let template = "";
-  
+
   if (powerShell){
     template += ps1.header(options.appID);
     template += legacy ? ps1.legacy(options) : ps1.body(options);
@@ -18,17 +18,17 @@ function generate(options, powerShell, legacy) {
   else {
     template += legacy ? toastXML.legacy(options) : toastXML.body(options);
   }
-  
+
   return template;
 }
 
 import { normalize } from "./option.js";
 
-function makeXML(option = {}){
+function makeXML(option = {} as any){
 
   const legacy = option.legacy || false;
   delete option.legacy;
-  
+
   const options = normalize(option, legacy);
   const template = legacy ? toastXML.legacy(options) : toastXML.body(options);
   return template;
